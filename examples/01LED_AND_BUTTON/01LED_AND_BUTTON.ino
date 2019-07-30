@@ -5,7 +5,7 @@
 
   The MIT License (MIT)
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
-*/
+ */
 
 // include the SPI library:
 #include <spartan-edge-ioex.h>
@@ -17,8 +17,8 @@ spartan_edge_ioex A;
 void setup() {
   int v;
 
-  /*set LED1/2 as output */
-  A.GPIO_Init(GPB_OE, 0xC0);
+  /* set LED1/2 as output */
+  A.GPIO_Init(GPIO_PORT_B, 0xC0);
 }
 
 // the loop routine runs over and over again forever:
@@ -26,13 +26,13 @@ void loop() {
   unsigned v;
 
   // Press USER1, led will reverse
-  if (0 == A.GPIO_ReadInputDataBit(GPE_OE, 4)) { 
-    /* LED1/2  reverse */
-    A.GPIO_WriteBit(GPB_ODATA, 6, HIGH);
-    A.GPIO_WriteBit(GPB_ODATA, 7, HIGH);
+  if (0 == A.GPIO_ReadInputDataBit(GPIO_PORT_E, 4)) { 
+    /* LED1/2  blink */
+    A.GPIO_SetBits(GPIO_PORT_B, 6);
+    A.GPIO_SetBits(GPIO_PORT_B, 7);
     delay(250);
-    A.GPIO_WriteBit(GPB_ODATA, 6, LOW);
-    A.GPIO_WriteBit(GPB_ODATA, 7, LOW);
+    A.GPIO_ResetBits(GPIO_PORT_B, 6);
+    A.GPIO_ResetBits(GPIO_PORT_B, 7);
   }
   
   // wait 250ms 

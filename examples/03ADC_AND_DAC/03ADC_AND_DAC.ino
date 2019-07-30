@@ -6,7 +6,7 @@
 
   The MIT License (MIT)
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
-*/
+ */
 
 // include the SPI library:
 #include <spartan-edge-ioex.h>
@@ -22,10 +22,10 @@ void setup() {
   Serial.begin(115200);
 
   /* Enable ADC1173, set /OE to LOW */
-  A.regWrite(GPE_OE, 0x80);
-  v = A.regRead(GPE_IDATA);
+  A.GPIO_Init(GPIO_PORT_E, 0x80);
+  v = A.GPIO_ReadInputData(GPIO_PORT_E);
   v &= ~0x80;
-  A.regWrite(GPE_ODATA, v);
+  A.GPIO_Write(GPIO_PORT_E, v);
 }
 
 // the loop routine runs over and over again forever:
@@ -48,5 +48,5 @@ void loop() {
   // Change other line
   Serial.println();  
   // delay in between reads for stability
-  delay(1500);      
+  delay(1500);
 }

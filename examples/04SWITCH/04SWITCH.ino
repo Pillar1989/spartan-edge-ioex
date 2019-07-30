@@ -5,7 +5,7 @@
   
   The MIT License (MIT)
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
-*/
+ */
 
 // include the SPI library:
 #include <spartan-edge-ioex.h>
@@ -28,7 +28,7 @@ int switch_chk(void) {
    * if one of the switchs is 'on' ,retun -1.
    * please put it to "off", and try again
    */
-  v = A.GPIO_ReadInputData(GPE_OE);
+  v = A.GPIO_ReadInputData(GPIO_PORT_E);
   if ((v & 0x7F) != 0x70){
       Serial.println("please put switch to off, and try again");
       return -1;
@@ -36,22 +36,22 @@ int switch_chk(void) {
   
   Serial.print("Switch on K1 ");
   // loop forever untill key1 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPE_OE, 0)) break;
+  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 0)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K2 ");
   // loop forever untill key2 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPE_OE, 1)) break;
+  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 1)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K3 ");
   // loop forever untill key3 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPE_OE, 2)) break;
+  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 2)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K4 ");
   // loop forever untill key4 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPE_OE, 3)) break;
+  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 3)) break;
   Serial.println("OK");
 
   return 0;
@@ -66,7 +66,7 @@ void loop() {
   if (switch_checked == 0) {
     Serial.print("Switch : ");
     Serial.println();
-    r = switch_chk();   //checking
+    r = switch_chk();   // checking
     if (r < 0) {
       Serial.print("FAIL ");
       Serial.println(r);

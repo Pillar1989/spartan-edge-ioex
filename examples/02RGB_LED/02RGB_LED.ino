@@ -5,7 +5,7 @@
   
   The MIT License (MIT)
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
-*/
+ */
 
 // include the SPI library:
 #include <spartan-edge-ioex.h>
@@ -15,7 +15,7 @@ spartan_edge_ioex A;
 
 // the setup routine runs once when you press reset:
 void setup() {
-  //noting to do
+  // noting to do
 }
 
 // the loop routine runs over and over again forever:

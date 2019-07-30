@@ -11,7 +11,7 @@
   
   The MIT License (MIT)
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
-*/
+ */
 
 // include the SPI library:
 #include <spartan-edge-ioex.h>
@@ -27,13 +27,13 @@ void setup() {
    * Enable TXS0104E-1 for SPI
    * Enable TXS0104E-0 for UART & I2C
    */
-  A.regWrite(GPZ_OE,    0xE0);
+  A.GPIO_Init(GPIO_PORT_Z, 0xE0);
   /*
    * FPGA_AR_OE2    = High
    * FPGA_AR_OE1    = High
    * FPGA_ESP_IN12  = Low, Enable ESP32 I2C
    */
-  A.regWrite(GPZ_ODATA, 0xC0);
+  A.GPIO_Write(GPIO_PORT_Z, 0xC0);
 
   Wire.begin();
 }
