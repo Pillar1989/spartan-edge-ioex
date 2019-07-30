@@ -69,12 +69,16 @@ class spartan_edge_ioex {
 	unsigned int GPIO_ReadInputData(unsigned int gpioN);	
 	unsigned int GPIO_ReadOutputDataBit(unsigned int gpioN, unsigned int GPIO_Pin);
 	unsigned int GPIO_ReadOutputData(unsigned int gpioN);
+	void GPIO_SetBits(unsigned int gpioN, unsigned int GPIO_Pin);
+	void GPIO_ResetBits(unsigned int gpioN, unsigned int GPIO_Pin);
+	void GPIO_WriteBit(unsigned int gpioN, unsigned int GPIO_Pin, unsigned int BitVal);
 	
-	// addr control
-	void GPIO_SetBits(unsigned int addr, unsigned int GPIO_Pin);
-	void GPIO_ResetBits(unsigned int addr, unsigned int GPIO_Pin);
-	void GPIO_WriteBit(unsigned int addr, unsigned int GPIO_Pin, unsigned int BitVal);
+	// set RGBLed1/2 val 
+	void setRGBLedVal(unsigned int index, unsigned int red, unsigned int green, unsigned int blue);
 	
+	// ADC and DAC control 
+	unsigned long readAdcData(void);
+	void writeDacData(unsigned int voltVal);
   private:
 	// SPI2GPIO write
 	const byte WRITE = WRITE_ADDR;  

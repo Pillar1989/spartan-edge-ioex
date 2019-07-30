@@ -2,10 +2,7 @@
 
 /* constructors */
 spartan_edge_ioex::spartan_edge_ioex(){
-	int v;
-	
-  // release FPGA logic
-  digitalWrite(resetPin, LOW);
+  int v;
   
   // set the slaveSelectPin as an output:
   pinMode(slaveSelectPin, OUTPUT);
@@ -17,14 +14,14 @@ spartan_edge_ioex::spartan_edge_ioex(){
   // set the reset Pin as an output
   pinMode(resetPin,       OUTPUT);
   
-  //set FPGA logic
+   // set FPGA logic
+  digitalWrite(resetPin, LOW);
+  //release FPGA logic
   digitalWrite(resetPin, HIGH);  
-  
-  Wire.begin();
 }
 
 /* read register */
-unsigned spartan_edge_ioex::regRead(int address){
+unsigned spartan_edge_ioex::regRead(int address) {
   unsigned v;
 
   // take the SS pin low to select the chip:
@@ -94,28 +91,88 @@ unsigned int spartan_edge_ioex::GPIO_ReadOutputData(unsigned int gpioN) {
 }
 
 /* GPIO set a bit */
-void spartan_edge_ioex::GPIO_SetBits(unsigned int addr, unsigned int GPIO_Pin) {
+void spartan_edge_ioex::GPIO_SetBits(unsigned int gpioN, unsigned int GPIO_Pin) {
   unsigned int v = 0;
-  unsigned int val =1 <<GPIO_Pin;
+  unsigned int val = 1 << GPIO_Pin;
   
-  v = regRead(addr);
-  regWrite(addr, v | val);
+  v = regRead(gpioN);
+  regWrite(gpioN, v | val);
 }
 
 /* GPIO Reset a bit */
-void spartan_edge_ioex::GPIO_ResetBits(unsigned int addr, unsigned int GPIO_Pin) {
+void spartan_edge_ioex::GPIO_ResetBits(unsigned int gpioN, unsigned int GPIO_Pin) {
   unsigned int v = 0;
-  unsigned int val =1 <<GPIO_Pin;
+  unsigned int val = 1 << GPIO_Pin;
   
-  v = regRead(addr);
-  regWrite(addr, v & ~val);
+  v = regRead(gpioN);
+  regWrite(gpioN, v & ~val);
 }
 
 /* GPIO write a bit 1 or 0 */
-void spartan_edge_ioex::GPIO_WriteBit(unsigned int addr, unsigned int GPIO_Pin, unsigned int BitVal) {
+void spartan_edge_ioex::GPIO_WriteBit(unsigned int gpioN, unsigned int GPIO_Pin, unsigned int BitVal) {
   unsigned int v = 0;
-  unsigned int val =1 << GPIO_Pin;
+  unsigned int val = 1 << GPIO_Pin;
   
-  v = regRead(addr);
-  regWrite(addr, (v & ~val) | (BitVal << GPIO_Pin));
+  v = regRead(gpioN);
+  regWrite(gpioN, (v & ~val) | (BitVal << GPIO_Pin));
+}
+
+/*
+ * cantrol RGBled color
+ * index should be set 0 or 1 
+ * red/green/blue should be in the range of 0 to 255
+ */
+void spartan_edge_ioex::setRGBLedVal(unsigned int index, unsigned int red, unsigned int green, unsigned int blue) {
+
+  if(0 == index) {
+	regWrite(SK6805_CTRL, 0x0);
+	regWrite(SK6805_DATA, blue);  // blue
+	regWrite(SK6805_CTRL, 0x1);
+	regWrite(SK6805_DATA, red);   // red
+	regWrite(SK6805_CTRL, 0x2);
+	regWrite(SK6805_DATA, green); // green
+  }
+  else if(1 == index) {
+	regWrite(SK6805_CTRL, 0x3);
+	regWrite(SK6805_DATA, blue);  // blue
+	regWrite(SK6805_CTRL, 0x4);
+	regWrite(SK6805_DATA, red);   // red
+	regWrite(SK6805_CTRL, 0x5);
+	regWrite(SK6805_DATA, green); // green
+  }
+}
+
+/* read ADC_data and return Voltage */
+unsigned long /* Voltage(mv) */spartan_edge_ioex::readAdcData(void){
+  int adcData;
+  unsigned long voltage;
+  
+  // read ADC value
+  adcData = regRead(ADC_DATA); 
+
+  /*
+   * ADC_data Transform to  Voltage(mv)
+   * if yu want to know detail,
+   * you can come [http://www.ti.com/product/ADC1173]
+   */
+  voltage = (unsigned long)adcData * 3300 / 256; 
+  
+  return voltage;
+}
+
+/* write Voltage(mv) to DAC */
+void spartan_edge_ioex::writeDacData(unsigned int voltVal/* Voltage(mv) */){
+  unsigned long dacData;
+  
+  /*
+   * Voltage(mv) Transform to ADC_data
+   * if yu want to know detail,
+   * you can come [http://www.ti.com/product/DAC7311]
+   */
+  dacData = (unsigned long)voltVal * 4096 / 3300;
+  
+  // DATA1 first
+  regWrite(DAC_DATA1, (dacData >> 6) & 0x3F);
+  // DATA0 last
+  regWrite(DAC_DATA0, (dacData << 2) & 0xFC);
 }
