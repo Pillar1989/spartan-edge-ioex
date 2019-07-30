@@ -55,12 +55,32 @@ enum {
   WRITE_ADDR = 0b10000000,
 };
 
+/* GPIO_PORT define*/
 #define GPIO_PORT_A GPA_OE
 #define GPIO_PORT_B GPB_OE
 #define GPIO_PORT_C GPC_OE
 #define GPIO_PORT_D GPD_OE
 #define GPIO_PORT_E GPE_OE
 #define GPIO_PORT_Z GPZ_OE
+
+/* button define */
+#define BTN_USER1		0x10
+#define BTN_USER2		0x20
+#define BTN_FPGA_RST	0x40
+#define SWITCH_K1		0x01
+#define SWITCH_K2		0x02
+#define SWITCH_K3		0x04
+#define SWITCH_K4		0x08
+
+/* led define */
+#define LED1 6
+#define LED2 7
+#define LED_ENABLE 0xC0
+#define LED_UNABLE 0x00
+
+/* RGBled define */
+#define RGB_LED0 0
+#define RGB_LED1 1
 
 // library interface description
 class spartan_edge_ioex {
@@ -85,8 +105,20 @@ class spartan_edge_ioex {
 	void setRGBLedVal(unsigned int index, unsigned char red, unsigned char green, unsigned char blue);
 	
 	// ADC and DAC control 
+	void adcEnable(void);
 	unsigned long readAdcData(void);
 	void writeDacData(unsigned int voltVal);
+	
+	// read button statu
+	unsigned int readButtonData(unsigned int btnNum);
+	
+	// read Sswitch statu
+	unsigned int readSwithData(unsigned int switchNum);
+	
+	// control led1/2 statu
+	void ledSet(unsigned int ledNum);
+	void ledClear(unsigned int ledNum);
+	void ledToggle(unsigned int flag);
 	
   private:
 	// SPI2GPIO write

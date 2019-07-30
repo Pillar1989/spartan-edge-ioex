@@ -21,17 +21,17 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   // set RGBled1/2 green
-  A.setRGBLedVal(0, 0, 50, 0);
-  A.setRGBLedVal(1, 0, 50, 0);
+  A.setRGBLedVal(RGB_LED1, 0, 50, 0);
+  A.setRGBLedVal(RGB_LED0, 0, 50, 0);
   delay(1000);
 
   // set RGBled1/2 red
-  A.setRGBLedVal(0, 50, 0, 0);
-  A.setRGBLedVal(1, 50, 0, 0);
+  A.setRGBLedVal(RGB_LED1, 50, 0, 0);
+  A.setRGBLedVal(RGB_LED0, 50, 0, 0);
   delay(1000);
 
   // set RGBled1/2 blue
-  A.setRGBLedVal(0, 0, 0, 50);
-  A.setRGBLedVal(1, 0, 0, 50);
+  A.setRGBLedVal(RGB_LED1, 0, 0, 50);
+  A.setRGBLedVal(RGB_LED0, 0, 0, 50);
   delay(1000);
 }

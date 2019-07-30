@@ -29,29 +29,29 @@ int switch_chk(void) {
    * please put it to "off", and try again
    */
   v = A.GPIO_ReadInputData(GPIO_PORT_E);
-  if ((v & 0x7F) != 0x70){
+  if ((v & (SWITCH_K1 | SWITCH_K2 | SWITCH_K3 | SWITCH_K4)) != 0x00){
       Serial.println("please put switch to off, and try again");
       return -1;
     }
   
   Serial.print("Switch on K1 ");
   // loop forever untill key1 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 0)) break;
+  for (;;)  if (1 == A.readSwithData(SWITCH_K1)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K2 ");
   // loop forever untill key2 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 1)) break;
+  for (;;)  if (1 == A.readSwithData(SWITCH_K2)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K3 ");
   // loop forever untill key3 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 2)) break;
+  for (;;)  if (1 == A.readSwithData(SWITCH_K3)) break;
   Serial.println("OK");
 
   Serial.print("Switch on K4 ");
   // loop forever untill key4 Switched
-  for (;;)  if (0 != A.GPIO_ReadInputDataBit(GPIO_PORT_E, 3)) break;
+  for (;;)  if (1 == A.readSwithData(SWITCH_K4)) break;
   Serial.println("OK");
 
   return 0;

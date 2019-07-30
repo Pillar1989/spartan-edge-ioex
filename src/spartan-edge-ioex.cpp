@@ -132,6 +132,17 @@ void spartan_edge_ioex::setRGBLedVal(unsigned int index, unsigned char red, unsi
 	regWrite(SK6805_DATA, green); 
 }
 
+/* ADC1173 initialization */
+void spartan_edge_ioex::adcEnable(void) {
+  int v;
+  
+  /* Enable ADC1173, set /OE to LOW */
+  GPIO_Init(GPIO_PORT_E, 0x80);
+  v = GPIO_ReadInputData(GPIO_PORT_E);
+  v &= ~0x80;
+  GPIO_Write(GPIO_PORT_E, v);
+}
+
 /* read ADC_data and return Voltage */
 unsigned long /* Voltage(mv) */spartan_edge_ioex::readAdcData(void) {
   int adcData;
@@ -165,4 +176,32 @@ void spartan_edge_ioex::writeDacData(unsigned int voltVal/* Voltage(mv) */) {
   regWrite(DAC_DATA1, (dacData >> 6) & 0x3F);
   // DATA0 last
   regWrite(DAC_DATA0, (dacData << 2) & 0xFC);
+}
+
+/* this fuc will return the button statu which you input */
+unsigned int spartan_edge_ioex::readButtonData(unsigned int btnNum) {
+  return ((GPIO_ReadInputData(GPIO_PORT_E) & btnNum) ==0);
+}
+
+/* this fuc will return the swith statu which you input */
+unsigned int spartan_edge_ioex::readSwithData(unsigned int switchNum) {
+  return ((GPIO_ReadInputData(GPIO_PORT_E) & switchNum) !=0);
+}
+
+/* set led */
+void spartan_edge_ioex::ledSet(unsigned int ledNum) {
+  GPIO_SetBits(GPIO_PORT_B, ledNum);
+}
+
+/* clear led */
+void spartan_edge_ioex::ledClear(unsigned int ledNum) {
+  GPIO_ResetBits(GPIO_PORT_B, ledNum);
+}
+
+/* led enable or not */
+void spartan_edge_ioex::ledToggle(unsigned int flag) {
+  int v;
+	
+  v = regRead(GPB_OE);
+  GPIO_Init(GPIO_PORT_B, (v & ~(1 << LED1 | 1 << LED2)) | flag);
 }

@@ -16,16 +16,11 @@ spartan_edge_ioex A;
 
 // the setup routine runs once when you press reset:
 void setup() {
-  int v;
-
   // initialize serial communication at 115200 bits per second: 
   Serial.begin(115200);
 
-  /* Enable ADC1173, set /OE to LOW */
-  A.GPIO_Init(GPIO_PORT_E, 0x80);
-  v = A.GPIO_ReadInputData(GPIO_PORT_E);
-  v &= ~0x80;
-  A.GPIO_Write(GPIO_PORT_E, v);
+  // enable ADC1173
+  A.adcEnable();
 }
 
 // the loop routine runs over and over again forever:

@@ -18,7 +18,7 @@ void setup() {
   int v;
 
   /* set LED1/2 as output */
-  A.GPIO_Init(GPIO_PORT_B, 0xC0);
+  A.ledToggle(LED_ENABLE);
 }
 
 // the loop routine runs over and over again forever:
@@ -26,13 +26,13 @@ void loop() {
   unsigned v;
 
   // Press USER1, led will reverse
-  if (0 == A.GPIO_ReadInputDataBit(GPIO_PORT_E, 4)) { 
+  if (1 == A.readButtonData(BTN_USER1)) {
     /* LED1/2  blink */
-    A.GPIO_SetBits(GPIO_PORT_B, 6);
-    A.GPIO_SetBits(GPIO_PORT_B, 7);
+    A.ledSet(LED1);
+    A.ledSet(LED2);
     delay(250);
-    A.GPIO_ResetBits(GPIO_PORT_B, 6);
-    A.GPIO_ResetBits(GPIO_PORT_B, 7);
+    A.ledClear(LED1);
+    A.ledClear(LED2);
   }
   
   // wait 250ms 
