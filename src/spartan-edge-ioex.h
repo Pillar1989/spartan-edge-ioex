@@ -64,13 +64,13 @@ enum {
 #define GPIO_PORT_Z GPZ_OE
 
 /* button define */
-#define BTN_USER1		0x10
-#define BTN_USER2		0x20
-#define BTN_FPGA_RST	0x40
-#define SWITCH_K1		0x01
-#define SWITCH_K2		0x02
-#define SWITCH_K3		0x04
-#define SWITCH_K4		0x08
+#define BTN_USER1       0x10
+#define BTN_USER2       0x20
+#define BTN_FPGA_RST    0x40
+#define SWITCH_K1       0x01
+#define SWITCH_K2       0x02
+#define SWITCH_K3       0x04
+#define SWITCH_K4       0x08
 
 /* led define */
 #define LED1 6
@@ -112,10 +112,10 @@ class spartan_edge_ioex {
 	// read button statu
 	unsigned int readButtonData(unsigned int btnNum);
 	
-	// read Sswitch statu
+	// read switch statu
 	unsigned int readSwithData(unsigned int switchNum);
 	
-	// control led1/2 statu
+	// led1/2 control
 	void ledSet(unsigned int ledNum);
 	void ledClear(unsigned int ledNum);
 	void ledToggle(unsigned int flag);
