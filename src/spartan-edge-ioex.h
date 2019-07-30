@@ -51,9 +51,16 @@ enum {
   GPZ_IDATA,
 
   ADC_DATA = 0x1F,
-  
+
   WRITE_ADDR = 0b10000000,
 };
+
+#define GPIO_PORT_A GPA_OE
+#define GPIO_PORT_B GPB_OE
+#define GPIO_PORT_C GPC_OE
+#define GPIO_PORT_D GPD_OE
+#define GPIO_PORT_E GPE_OE
+#define GPIO_PORT_Z GPZ_OE
 
 // library interface description
 class spartan_edge_ioex {
@@ -64,24 +71,26 @@ class spartan_edge_ioex {
 	unsigned regWrite(int address, int value);
 	
 	// GPIO control
-	void GPIO_Init(unsigned int gpioN, unsigned int val);
-	unsigned int GPIO_ReadInputDataBit(unsigned int gpioN, unsigned int GPIO_Pin);
-	unsigned int GPIO_ReadInputData(unsigned int gpioN);	
-	unsigned int GPIO_ReadOutputDataBit(unsigned int gpioN, unsigned int GPIO_Pin);
-	unsigned int GPIO_ReadOutputData(unsigned int gpioN);
-	void GPIO_SetBits(unsigned int gpioN, unsigned int GPIO_Pin);
-	void GPIO_ResetBits(unsigned int gpioN, unsigned int GPIO_Pin);
-	void GPIO_WriteBit(unsigned int gpioN, unsigned int GPIO_Pin, unsigned int BitVal);
+	void GPIO_Init(unsigned int GPIO_Port, unsigned int PortVal);
+	unsigned int GPIO_ReadInputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin);
+	unsigned int GPIO_ReadInputData(unsigned int GPIO_Port);	
+	unsigned int GPIO_ReadOutputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin);
+	unsigned int GPIO_ReadOutputData(unsigned int GPIO_Port);
+	void GPIO_SetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin);
+	void GPIO_ResetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin);
+	void GPIO_WriteBit(unsigned int GPIO_Port, unsigned int GPIO_Pin, unsigned int BitVal);
+	void GPIO_Write(unsigned int GPIO_Port, unsigned int PortVal);
 	
 	// set RGBLed1/2 val 
-	void setRGBLedVal(unsigned int index, unsigned int red, unsigned int green, unsigned int blue);
+	void setRGBLedVal(unsigned int index, unsigned char red, unsigned char green, unsigned char blue);
 	
 	// ADC and DAC control 
 	unsigned long readAdcData(void);
 	void writeDacData(unsigned int voltVal);
+	
   private:
 	// SPI2GPIO write
-	const byte WRITE = WRITE_ADDR;  
+	const byte WRITE = WRITE_ADDR;
 
 	// set pin 10 as the slave select for the digital pot:
 	int slaveSelectPin = 10;
