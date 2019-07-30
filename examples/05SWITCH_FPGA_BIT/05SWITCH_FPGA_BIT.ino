@@ -17,31 +17,27 @@
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
-spartan_edge_ioex A;
+spartan_edge_ioex ioex;
 
 // the setup routine runs once when you press reset:
 void setup() {
-  int v;
-  
   /*
    * Enable TXS0104E-1 for SPI
    * Enable TXS0104E-0 for UART & I2C
    */
-  A.GPIO_Init(GPIO_PORT_Z, 0xE0);
+  ioex.GPIO_Init(GPIO_PORT_Z, 0xE0);
   /*
    * FPGA_AR_OE2    = High
    * FPGA_AR_OE1    = High
    * FPGA_ESP_IN12  = Low, Enable ESP32 I2C
    */
-  A.GPIO_Write(GPIO_PORT_Z, 0xC0);
+  ioex.GPIO_Write(GPIO_PORT_Z, 0xC0);
 
   Wire.begin();
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
-  int r;
-  
   Wire.beginTransmission(0x20); // Send from machine address and start bit
   Wire.write(0x01);             // Send register address
   Wire.write(0x02);             // send data

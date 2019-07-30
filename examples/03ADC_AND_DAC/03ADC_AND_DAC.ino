@@ -12,7 +12,7 @@
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
-spartan_edge_ioex A;
+spartan_edge_ioex ioex;
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -20,16 +20,15 @@ void setup() {
   Serial.begin(115200);
 
   // enable ADC1173
-  A.adcEnable();
+  ioex.adcEnable();
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
   unsigned long voltVal;
-  int adcData;
 
   // read ADC value
-  voltVal = A.readAdcData();
+  voltVal = ioex.readAdcData();
   
   /* output Voltage(ms) by Serial */
   Serial.print("ADC : ");
@@ -38,7 +37,7 @@ void loop() {
 
   // output DAC val
   // DAC-OUT = ADC-IN ,input DAC value ,which is what you read before 
-  A.writeDacData(voltVal);
+  ioex.writeDacData(voltVal);
   
   // Change other line
   Serial.println();  

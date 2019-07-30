@@ -11,7 +11,7 @@
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
-spartan_edge_ioex A;
+spartan_edge_ioex ioex;
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -21,17 +21,17 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   // set RGBled1/2 green
-  A.setRGBLedVal(RGB_LED1, 0, 50, 0);
-  A.setRGBLedVal(RGB_LED0, 0, 50, 0);
+  ioex.setRGBLedVal(RGB_LED1, 0, 50, 0);
+  ioex.setRGBLedVal(RGB_LED0, 0, 50, 0);
   delay(1000);
 
   // set RGBled1/2 red
-  A.setRGBLedVal(RGB_LED1, 50, 0, 0);
-  A.setRGBLedVal(RGB_LED0, 50, 0, 0);
+  ioex.setRGBLedVal(RGB_LED1, 50, 0, 0);
+  ioex.setRGBLedVal(RGB_LED0, 50, 0, 0);
   delay(1000);
 
   // set RGBled1/2 blue
-  A.setRGBLedVal(RGB_LED1, 0, 0, 50);
-  A.setRGBLedVal(RGB_LED0, 0, 0, 50);
+  ioex.setRGBLedVal(RGB_LED1, 0, 0, 50);
+  ioex.setRGBLedVal(RGB_LED0, 0, 0, 50);
   delay(1000);
 }

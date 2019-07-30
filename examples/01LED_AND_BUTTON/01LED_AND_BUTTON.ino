@@ -11,28 +11,24 @@
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
-spartan_edge_ioex A;
+spartan_edge_ioex ioex;
 
 // the setup routine runs once when you press reset:
 void setup() {
-  int v;
-
   /* set LED1/2 as output */
-  A.ledToggle(LED_ENABLE);
+  ioex.ledToggle(LED_ENABLE);
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
-  unsigned v;
-
   // Press USER1, led will reverse
-  if (1 == A.readButtonData(BTN_USER1)) {
+  if (1 == ioex.readButtonData(BTN_USER1)) {
     /* LED1/2  blink */
-    A.ledSet(LED1);
-    A.ledSet(LED2);
+    ioex.ledSet(LED1);
+    ioex.ledSet(LED2);
     delay(250);
-    A.ledClear(LED1);
-    A.ledClear(LED2);
+    ioex.ledClear(LED1);
+    ioex.ledClear(LED2);
   }
   
   // wait 250ms 
