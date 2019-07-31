@@ -213,10 +213,3 @@ void spartan_edge_ioex::ledToggle(unsigned int ledNum) {
   v = GPIO_ReadOutputData(GPIO_PORT_B);
   GPIO_Write(GPIO_PORT_B, (v ^ (1 << ledNum)));
 }
-
-
-
-
-
-
-
