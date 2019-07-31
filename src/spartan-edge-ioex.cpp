@@ -198,10 +198,25 @@ void spartan_edge_ioex::ledClear(unsigned int ledNum) {
   GPIO_ResetBits(GPIO_PORT_B, ledNum);
 }
 
-/* led enable or not */
-void spartan_edge_ioex::ledToggle(unsigned int flag) {
+/* led enable */
+void spartan_edge_ioex::ledEnable(void) {
   int v;
 	
-  v = regRead(GPB_OE);
-  GPIO_Init(GPIO_PORT_B, (v & ~(1 << LED1 | 1 << LED2)) | flag);
+  v = regRead(GPIO_PORT_B);
+  GPIO_Init(GPIO_PORT_B, (v | (1 << LED1 | 1 << LED2)));
 }
+
+/* led toggle */
+void spartan_edge_ioex::ledToggle(unsigned int ledNum) {
+  int v;
+	
+  v = GPIO_ReadOutputData(GPIO_PORT_B);
+  GPIO_Write(GPIO_PORT_B, (v ^ (1 << ledNum)));
+}
+
+
+
+
+
+
+

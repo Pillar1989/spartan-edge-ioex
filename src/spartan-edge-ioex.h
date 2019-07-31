@@ -118,7 +118,8 @@ class spartan_edge_ioex {
 	// led1/2 control
 	void ledSet(unsigned int ledNum);
 	void ledClear(unsigned int ledNum);
-	void ledToggle(unsigned int flag);
+	void ledToggle(unsigned int ledNum);
+	void ledEnable(void);
 	
   private:
 	// SPI2GPIO write
