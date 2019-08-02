@@ -1,6 +1,6 @@
-#= spartan_edge_ioex Library for spartan_edge =
+= spartan_edge_ioex Library for spartan_edge =
 
-#This library allows you to control spartan-edge-accelerator board 
+This library allows you to control spartan-edge-accelerator board 
 
 
 
