@@ -46,7 +46,7 @@ enum {
   #define UART_STAT_RX_DV    0x01
   UART_STAT,
 
-  GPZ_OE = 0x1C,
+  GPF_OE = 0x20,
   GPZ_ODATA,
   GPZ_IDATA,
 
