@@ -66,6 +66,7 @@ enum {
 #define GPIO_PORT_D GPD_OE
 #define GPIO_PORT_E GPE_OE
 #define GPIO_PORT_Z GPZ_OE
+#define GPIO_PORT_F GPF_OE
 
 /* button define */
 #define BTN_USER1       0x10
