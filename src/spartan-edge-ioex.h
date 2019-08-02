@@ -46,14 +46,18 @@ enum {
   #define UART_STAT_RX_DV    0x01
   UART_STAT,
 
-  GPF_OE = 0x20,
+  GPZ_OE = 0x1C,
   GPZ_ODATA,
   GPZ_IDATA,
-
+ 
   ADC_DATA = 0x1F,
 
   WRITE_ADDR = 0b10000000,
-};
+
+  GPF_OE = 0x20,
+  GPF_ODATA,
+  GPF_IDATA,
+ };
 
 /* GPIO_PORT define*/
 #define GPIO_PORT_A GPA_OE
