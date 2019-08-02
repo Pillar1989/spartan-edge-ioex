@@ -1,5 +1,5 @@
 /*
- * spartan-edge-ioex.h - LED libraries for spartan-edge-accelerato
+ * spartan-edge-ioex.h - for spartan-edge-accelerato
  * 
  */
  
