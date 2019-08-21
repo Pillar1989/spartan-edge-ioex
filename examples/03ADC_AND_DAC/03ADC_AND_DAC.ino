@@ -8,7 +8,7 @@
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
  */
 
-// include the SPI library:
+// include the ioex library
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200);
 
   // enable ADC1173
-  ioex.adcEnable();
+  ioex.enableAdc();
 }
 
 // the loop routine runs over and over again forever:

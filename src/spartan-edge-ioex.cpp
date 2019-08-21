@@ -1,9 +1,10 @@
+/*
+ * spartan-edge-ioex - ioex library for spi2gpio bitstream
+ */
 #include <spartan-edge-ioex.h>
 
 /* constructors */
 spartan_edge_ioex::spartan_edge_ioex() {
-  int v;
-  
   // set the slaveSelectPin as an output:
   pinMode(slaveSelectPin, OUTPUT);
 
@@ -49,37 +50,42 @@ unsigned spartan_edge_ioex::regWrite(int address, int value) {
   return v;
 }
 
-/* Initialize the GPIO status */
-void spartan_edge_ioex::GPIO_Init(unsigned int GPIO_Port, unsigned int PortVal) {
-  regWrite(GPIO_Port, PortVal);
+/* get the GPIO port input/output directions */
+unsigned spartan_edge_ioex::getGpioDir(unsigned GPIO_Port) {
+  return regRead(GPIO_Port);
+}
+
+/* set the GPIO port input/output directions */
+void spartan_edge_ioex::setGpioDir(unsigned GPIO_Port, unsigned Dirs) {
+  regWrite(GPIO_Port, Dirs);
 }
 
 /* read a bit form port input data */
-unsigned int spartan_edge_ioex::GPIO_ReadInputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin) {
-  unsigned int v = 0;
+unsigned spartan_edge_ioex::readGpioInputDataBit(unsigned GPIO_Port, unsigned GPIO_Pin) {
+  unsigned v = 0;
   
   v = regRead(GPIO_Port + 2);
   return ((v >> GPIO_Pin) & 0x01);
 }
 
 /* read port input data */
-unsigned int spartan_edge_ioex::GPIO_ReadInputData(unsigned int GPIO_Port) {
-  unsigned int v = 0;
+unsigned spartan_edge_ioex::readGpioInputData(unsigned GPIO_Port) {
+  unsigned v = 0;
   
   v = regRead(GPIO_Port + 2);
   return v;
 }
 
 /* read a bit form port output data */
-unsigned int spartan_edge_ioex::GPIO_ReadOutputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin) {
-  unsigned int v = 0;
+unsigned spartan_edge_ioex::readGpioOutputDataBit(unsigned GPIO_Port, unsigned GPIO_Pin) {
+  unsigned v = 0;
   
   v = regRead(GPIO_Port + 1);
   return ((v >> GPIO_Pin) & 0x01);
 }
 
 /* read port output data */
-unsigned int spartan_edge_ioex::GPIO_ReadOutputData(unsigned int GPIO_Port) {
+unsigned spartan_edge_ioex::readGpioOutputData(unsigned GPIO_Port) {
   int v = 0;
   
   v = regRead(GPIO_Port + 1);
@@ -87,34 +93,34 @@ unsigned int spartan_edge_ioex::GPIO_ReadOutputData(unsigned int GPIO_Port) {
 }
 
 /* GPIO set a bit */
-void spartan_edge_ioex::GPIO_SetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin) {
-  unsigned int v = 0;
-  unsigned int val = 1 << GPIO_Pin;
+void spartan_edge_ioex::setGpioBits(unsigned GPIO_Port, unsigned GPIO_Pin) {
+  unsigned v = 0;
+  unsigned val = 1 << GPIO_Pin;
   
   v = regRead(GPIO_Port + 1);
   regWrite(GPIO_Port + 1, v | val);
 }
 
 /* GPIO Reset a bit */
-void spartan_edge_ioex::GPIO_ResetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin) {
-  unsigned int v = 0;
-  unsigned int val = 1 << GPIO_Pin;
+void spartan_edge_ioex::resetGpioBits(unsigned GPIO_Port, unsigned GPIO_Pin) {
+  unsigned v = 0;
+  unsigned val = 1 << GPIO_Pin;
   
   v = regRead(GPIO_Port + 1);
   regWrite(GPIO_Port + 1, v & ~val);
 }
 
 /* GPIO write a bit 1 or 0 */
-void spartan_edge_ioex::GPIO_WriteBit(unsigned int GPIO_Port, unsigned int GPIO_Pin, unsigned int BitVal) {
-  unsigned int v = 0;
-  unsigned int val = 1 << GPIO_Pin;
-  
+void spartan_edge_ioex::writeGpioBit(unsigned GPIO_Port, unsigned GPIO_Pin, unsigned BitVal) {
+  unsigned v = 0;
+  unsigned val = 1 << GPIO_Pin;
+
   v = regRead(GPIO_Port + 1);
   regWrite(GPIO_Port + 1, (v & ~val) | (BitVal << GPIO_Pin));
 }
 
 /* GPIO write a port */
-void spartan_edge_ioex::GPIO_Write(unsigned int GPIO_Port, unsigned int PortVal) {
+void spartan_edge_ioex::writeGpio(unsigned GPIO_Port, unsigned PortVal) {
   regWrite(GPIO_Port + 1, PortVal);
 }
 
@@ -123,24 +129,26 @@ void spartan_edge_ioex::GPIO_Write(unsigned int GPIO_Port, unsigned int PortVal)
  * index should be set 0 or 1 
  * red/green/blue should be in the range of 0 to 255
  */
-void spartan_edge_ioex::setRGBLedVal(unsigned int index, unsigned char red, unsigned char green, unsigned char blue) {
-  	regWrite(SK6805_CTRL, (0x0u + index * 3));// blue
-	regWrite(SK6805_DATA, blue);  				
-	regWrite(SK6805_CTRL, (0x1u + index * 3));// red
-	regWrite(SK6805_DATA, red);   				
-	regWrite(SK6805_CTRL, (0x2u + index * 3));// green
-	regWrite(SK6805_DATA, green); 
+void spartan_edge_ioex::setRGBLed(
+  unsigned index, unsigned char red, unsigned char green, unsigned char blue
+) {
+  regWrite(SK6805_CTRL, (0x0u + index * 3));// blue
+  regWrite(SK6805_DATA, blue);  				
+  regWrite(SK6805_CTRL, (0x1u + index * 3));// red
+  regWrite(SK6805_DATA, red);   				
+  regWrite(SK6805_CTRL, (0x2u + index * 3));// green
+  regWrite(SK6805_DATA, green); 
 }
 
 /* ADC1173 initialization */
-void spartan_edge_ioex::adcEnable(void) {
+void spartan_edge_ioex::enableAdc(void) {
   int v;
   
   /* Enable ADC1173, set /OE to LOW */
-  GPIO_Init(GPIO_PORT_E, 0x80);
-  v = GPIO_ReadInputData(GPIO_PORT_E);
+  setGpioDir(GPIO_PORT_E, 0x80);
+  v = readGpioInputData(GPIO_PORT_E);
   v &= ~0x80;
-  GPIO_Write(GPIO_PORT_E, v);
+  writeGpio(GPIO_PORT_E, v);
 }
 
 /* read ADC_data and return Voltage */
@@ -162,7 +170,7 @@ unsigned long /* Voltage(mv) */spartan_edge_ioex::readAdcData(void) {
 }
 
 /* write Voltage(mv) to DAC */
-void spartan_edge_ioex::writeDacData(unsigned int voltVal/* Voltage(mv) */) {
+void spartan_edge_ioex::writeDacData(unsigned voltVal/* Voltage(mv) */) {
   unsigned long dacData;
   
   /*
@@ -179,37 +187,42 @@ void spartan_edge_ioex::writeDacData(unsigned int voltVal/* Voltage(mv) */) {
 }
 
 /* this fuc will return the button statu which you input */
-unsigned int spartan_edge_ioex::readButtonData(unsigned int btnNum) {
-  return ((GPIO_ReadInputData(GPIO_PORT_E) & btnNum) ==0);
+unsigned spartan_edge_ioex::readButtonData(unsigned btnNum) {
+  return ((readGpioInputData(GPIO_PORT_E) & btnNum) ==0);
 }
 
 /* this fuc will return the swith statu which you input */
-unsigned int spartan_edge_ioex::readSwithData(unsigned int switchNum) {
-  return ((GPIO_ReadInputData(GPIO_PORT_E) & switchNum) !=0);
+unsigned spartan_edge_ioex::readSwithData(unsigned switchNum) {
+  return ((readGpioInputData(GPIO_PORT_E) & switchNum) !=0);
 }
 
 /* set led */
-void spartan_edge_ioex::ledSet(unsigned int ledNum) {
-  GPIO_SetBits(GPIO_PORT_B, ledNum);
+void spartan_edge_ioex::setLed(unsigned ledNum) {
+  setGpioBits(GPIO_PORT_B, ledNum);
 }
 
 /* clear led */
-void spartan_edge_ioex::ledClear(unsigned int ledNum) {
-  GPIO_ResetBits(GPIO_PORT_B, ledNum);
+void spartan_edge_ioex::clearLed(unsigned ledNum) {
+  resetGpioBits(GPIO_PORT_B, ledNum);
 }
 
 /* led enable */
-void spartan_edge_ioex::ledEnable(void) {
+void spartan_edge_ioex::enableLed(bool en) {
   int v;
 	
   v = regRead(GPIO_PORT_B);
-  GPIO_Init(GPIO_PORT_B, (v | (1 << LED1 | 1 << LED2)));
+  if (en) {
+    v |= LED_ENABLE;
+  } else {
+    v &= ~LED_ENABLE;
+  }
+  setGpioDir(GPIO_PORT_B, v);
 }
 
 /* led toggle */
-void spartan_edge_ioex::ledToggle(unsigned int ledNum) {
+void spartan_edge_ioex::toggleLed(unsigned ledNum) {
   int v;
 	
-  v = GPIO_ReadOutputData(GPIO_PORT_B);
-  GPIO_Write(GPIO_PORT_B, (v ^ (1 << ledNum)));
+  v = readGpioOutputData(GPIO_PORT_B);
+  writeGpio(GPIO_PORT_B, (v ^ (1 << ledNum)));
 }

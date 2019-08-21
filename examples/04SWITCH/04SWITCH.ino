@@ -7,7 +7,7 @@
   Copyright (C) 2019  Seeed Technology Co.,Ltd.
  */
 
-// include the SPI library:
+// include the ioex library
 #include <spartan-edge-ioex.h>
 
 // initialize the spartan_edge_ioex library
@@ -28,7 +28,7 @@ int switch_chk(void) {
    * if one of the switchs is 'on' ,retun -1.
    * please put it to "off", and try again
    */
-  v = ioex.GPIO_ReadInputData(GPIO_PORT_E);
+  v = ioex.readGpioInputData(GPIO_PORT_E);
   if ((v & (SWITCH_K1 | SWITCH_K2 | SWITCH_K3 | SWITCH_K4)) != 0x00){
       Serial.println("please put switch to off, and try again");
       return -1;

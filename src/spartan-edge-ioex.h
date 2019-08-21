@@ -1,6 +1,5 @@
 /*
- * spartan-edge-ioex.h - for spartan-edge-accelerato
- * 
+ * spartan-edge-ioex - ioex library for spi2gpio bitstream
  */
  
 // ensure this library description is only included once
@@ -8,7 +7,6 @@
 #define SPARTAN_EDGE_IOEX_H 
 
 #include <SPI.h>
-#include <Wire.h>
 
 enum {
   GPA_OE = 0x00,
@@ -52,8 +50,6 @@ enum {
  
   ADC_DATA = 0x1F,
 
-  WRITE_ADDR = 0b10000000,
-
   GPF_OE = 0x20,
   GPF_ODATA,
   GPF_IDATA,
@@ -81,7 +77,7 @@ enum {
 #define LED1 6
 #define LED2 7
 #define LED_ENABLE 0xC0
-#define LED_UNABLE 0x00
+#define LED_DISABLE 0x00
 
 /* RGBled define */
 #define RGB_LED0 0
@@ -94,41 +90,42 @@ class spartan_edge_ioex {
 	spartan_edge_ioex();
 	unsigned regRead(int address);
 	unsigned regWrite(int address, int value);
-	
+
 	// GPIO control
-	void GPIO_Init(unsigned int GPIO_Port, unsigned int PortVal);
-	unsigned int GPIO_ReadInputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin);
-	unsigned int GPIO_ReadInputData(unsigned int GPIO_Port);	
-	unsigned int GPIO_ReadOutputDataBit(unsigned int GPIO_Port, unsigned int GPIO_Pin);
-	unsigned int GPIO_ReadOutputData(unsigned int GPIO_Port);
-	void GPIO_SetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin);
-	void GPIO_ResetBits(unsigned int GPIO_Port, unsigned int GPIO_Pin);
-	void GPIO_WriteBit(unsigned int GPIO_Port, unsigned int GPIO_Pin, unsigned int BitVal);
-	void GPIO_Write(unsigned int GPIO_Port, unsigned int PortVal);
-	
+	unsigned getGpioDir(unsigned GPIO_Port);
+	void setGpioDir(unsigned GPIO_Port, unsigned Dirs);
+	unsigned readGpioInputDataBit(unsigned GPIO_Port, unsigned GPIO_Pin);
+	unsigned readGpioInputData(unsigned GPIO_Port);	
+	unsigned readGpioOutputDataBit(unsigned GPIO_Port, unsigned GPIO_Pin);
+	unsigned readGpioOutputData(unsigned GPIO_Port);
+	void setGpioBits(unsigned GPIO_Port, unsigned GPIO_Pin);
+	void resetGpioBits(unsigned GPIO_Port, unsigned GPIO_Pin);
+	void writeGpioBit(unsigned GPIO_Port, unsigned GPIO_Pin, unsigned BitVal);
+	void writeGpio(unsigned GPIO_Port, unsigned PortVal);
+
 	// set RGBLed1/2 val 
-	void setRGBLedVal(unsigned int index, unsigned char red, unsigned char green, unsigned char blue);
-	
+	void setRGBLed(unsigned index, unsigned char red, unsigned char green, unsigned char blue);
+
 	// ADC and DAC control 
-	void adcEnable(void);
+	void enableAdc(void);
 	unsigned long readAdcData(void);
-	void writeDacData(unsigned int voltVal);
-	
-	// read button statu
-	unsigned int readButtonData(unsigned int btnNum);
-	
-	// read switch statu
-	unsigned int readSwithData(unsigned int switchNum);
-	
+	void writeDacData(unsigned voltVal);
+
+	// read button status
+	unsigned readButtonData(unsigned btnNum);
+
+	// read switch status
+	unsigned readSwithData(unsigned switchNum);
+
 	// led1/2 control
-	void ledSet(unsigned int ledNum);
-	void ledClear(unsigned int ledNum);
-	void ledToggle(unsigned int ledNum);
-	void ledEnable(void);
-	
+	void enableLed(bool en);
+	void setLed(unsigned ledNum);
+	void clearLed(unsigned ledNum);
+	void toggleLed(unsigned ledNum);
+
   private:
 	// SPI2GPIO write
-	const byte WRITE = WRITE_ADDR;
+	const byte WRITE = 0b10000000;
 
 	// set pin 10 as the slave select for the digital pot:
 	int slaveSelectPin = 10;
