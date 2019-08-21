@@ -1,0 +1,67 @@
+#######################################
+# Syntax Coloring Map spartan-edge-ioex
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+spartan_edge_ioex	KEYWORD1	spartan-edge-ioex
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+regRead	KEYWORD2
+regWrite	KEYWORD2
+getGpioDir	KEYWORD2
+setGpioDir	KEYWORD2
+readGpioInputDataBit	KEYWORD2
+readGpioInputData	KEYWORD2
+readGpioOutputDataBit	KEYWORD2
+readGpioOutputData	KEYWORD2
+setGpioBits	KEYWORD2
+resetGpioBits	KEYWORD2
+writeGpioBit	KEYWORD2
+writeGpio	KEYWORD2
+
+setRGBLed	KEYWORD2
+enableAdc	KEYWORD2
+
+readAdcData	KEYWORD2
+writeDacData	KEYWORD2
+
+readButtonData	KEYWORD2
+readSwithData	KEYWORD2
+
+enableLed	KEYWORD2
+setLed	KEYWORD2
+clearLed	KEYWORD2
+toggleLed	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+GPIO_PORT_A	LITERAL1
+GPIO_PORT_B	LITERAL1
+GPIO_PORT_C	LITERAL1
+GPIO_PORT_D	LITERAL1
+GPIO_PORT_E	LITERAL1
+GPIO_PORT_Z	LITERAL1
+GPIO_PORT_F	LITERAL1
+
+BTN_USER1	LITERAL1
+BTN_USER2	LITERAL1
+BTN_FPGA_RST	LITERAL1
+SWITCH_K1	LITERAL1
+SWITCH_K2	LITERAL1
+SWITCH_K3	LITERAL1
+SWITCH_K4	LITERAL1
+
+LED1	LITERAL1
+LED2	LITERAL1
+LED_ENABLE	LITERAL1
+LED_DISABLE	LITERAL1
+
+RGB_LED0	LITERAL1
+RGB_LED1	LITERAL1
+
